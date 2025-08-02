@@ -9,10 +9,10 @@ void main() {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
+                Color.fromARGB(255, 102, 21, 178),
                 Color.fromARGB(255, 140, 52, 221),
-                Color.fromARGB(255, 90, 17, 159),
               ],
-              begin: Alignment.topLeft,
+              begin: Alignment.topCenter,
               end: Alignment.bottomRight,
             ),
           ),
