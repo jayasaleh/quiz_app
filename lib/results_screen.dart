@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/data/question.dart';
+import 'package:quiz_app/question_summary.dart';
 
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen({super.key, required this.choosenAnswer});
-
+  const ResultsScreen({
+    super.key,
+    required this.choosenAnswer,
+    required this.onRestart,
+  });
+  final void Function() onRestart;
   final List<String> choosenAnswer;
-
   List<Map<String, Object>> getSummaryData() {
     final List<Map<String, Object>> summary = [];
 
@@ -22,6 +27,11 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final summaryData = getSummaryData();
+    final numTotalQuestions = questions.length;
+    final numCorrectQuestions = summaryData.where((data) {
+      return data['user_answer'] == data['correct_answer'];
+    }).length;
     // TODO: implement build
     return SizedBox(
       width: double.infinity,
@@ -30,11 +40,26 @@ class ResultsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Your answered X out of Y question correctly!'),
+            Text(
+              'Your answered $numCorrectQuestions out of $numTotalQuestions question correctly!',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
             SizedBox(height: 30),
-            Text('Your answered X out of Y question correctly!'),
+            QuestionSummary(summaryData),
             SizedBox(height: 30),
-            TextButton(onPressed: () {}, child: Text('Restart Quiz')),
+            OutlinedButton.icon(
+              onPressed: onRestart,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.all(20),
+              ),
+              label: Text('Restart', style: GoogleFonts.lato(fontSize: 16)),
+              icon: Icon(Icons.restart_alt_outlined, size: 30),
+            ),
           ],
         ),
       ),
